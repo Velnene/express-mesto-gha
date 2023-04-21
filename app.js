@@ -1,16 +1,17 @@
 const express = require('express');
 const app = express();
+const {users} = require('./users')
+const { PORT = 3000 } = process.env;
+const userRouter = require('./routes/users')
+app.use(express.json())
+app.use(userRouter);
 
-const { PORT = 3000, BATH_PATH } = process.env;
-const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/mydb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false
+
+// const mongoose = require('mongoose');
+
+// mongoose.connect('mongodb://localhost:27017/mestodb');
+
+app.listen(PORT, () => {
+  console.log("server started on port " + PORT)
 });
-
-app.listen(3000, (() => {
-  console.log(BATH_PATH)
-  console.log("server starting")
-}));
