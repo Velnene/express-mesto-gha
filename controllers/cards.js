@@ -38,6 +38,7 @@ const createCard = (req, res) => {
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
   Card.findByIdAndRemove(cardId)
+    .populate(['owner', 'likes'])
     .then((card) => {
       if (card) {
         res.send({ message: 'Карточка удалена' });
