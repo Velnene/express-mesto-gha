@@ -29,10 +29,10 @@ const createCard = (req, res) => {
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
   Card.findById(cardId).then((card) => {
-    if (card.owner === req.user._id) {
+    if (String(card.owner) === String(req.user._id)) {
       Card.findByIdAndRemove(cardId)
         .then(() => {
-          res.status(200).send({ message: 'Карточка удалена' });
+          res.send({ message: 'Карточка удалена' });
         })
         .catch((e) => {
           if (e.status === 404) {
