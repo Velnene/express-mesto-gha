@@ -16,6 +16,9 @@ const { userRouter, cardRouter } = require('./routes');
 app.use(express.json());
 app.use(userRouter);
 app.use(cardRouter);
+app.get('*', (req, res) => {
+  res.status(404).send({ message: 'Неверный путь' });
+});
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {});
 
