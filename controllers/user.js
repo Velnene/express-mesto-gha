@@ -3,15 +3,16 @@ const User = require('../models/user');
 const getUserId = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
-    .orFail(() => {
-      throw new Error('Not found');
-    })
     .then((user) => {
-      res.send({ data: user });
+      if (user) {
+        res.status(200).send({ data: user });
+      } else {
+        res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+      }
     })
     .catch((e) => {
-      if (e.name === 'CastError') {
-        res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+      if (e.name === 'ValidationError') {
+        res.status(400).send({ message: 'Поля неверно заполнены' });
       } else {
         res.status(500).send({ message: 'error' });
       }
@@ -46,9 +47,9 @@ const createUser = (req, res) => {
 const updateUser = (req, res) => {
   const userId = req.user._id;
   const { name, about } = req.body;
-  User.findByIdAndUpdate(userId, { name, about })
+  User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
     .then((user) => {
-      res.status(201).send(user);
+      res.status(200).send(user);
     })
     .catch((e) => {
       if (e.name === 'ValidationError') {
@@ -62,7 +63,7 @@ const updateUser = (req, res) => {
 const updateUserAvatar = (req, res) => {
   const userId = req.user._id;
   const { avatar } = req.body;
-  User.findByIdAndUpdate(userId, { avatar })
+  User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       res.status(201).send(user);
     })

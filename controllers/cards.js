@@ -47,13 +47,17 @@ const deleteCard = (req, res) => {
 
 const addLikeikeCard = (req, res) => {
   const userId = req.user._id;
-  Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: userId } })
+  Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: userId } }, { new: true })
     .then((like) => {
-      res.send({ data: like });
+      if (like) {
+        res.send({ data: like });
+      } else {
+        res.status(404).send({ message: 'Карточка не найдена' });
+      }
     })
     .catch((e) => {
-      if (e.status === 404) {
-        res.status(404).send({ message: 'Карточка не найдена' });
+      if (e.name === 'CastError') {
+        res.status(400).send({ message: 'Карточка не найдена' });
       } else {
         res.send({ message: 'Smth went wrong' });
       }
@@ -64,11 +68,15 @@ const deleteLikeikeCard = (req, res) => {
   const userId = req.user._id;
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: userId } })
     .then((like) => {
-      res.send({ data: like });
+      if (like) {
+        res.send({ data: like });
+      } else {
+        res.status(404).send({ message: 'Карточка не найдена' });
+      }
     })
     .catch((e) => {
-      if (e.status === 404) {
-        res.status(404).send({ message: 'Карточка не найдена' });
+      if (e.name === 'CastError') {
+        res.status(400).send({ message: 'Карточка не найдена' });
       } else {
         res.send({ message: 'Smth went wrong' });
       }
