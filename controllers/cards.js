@@ -10,6 +10,7 @@ const {
 
 const getCards = (req, res) => {
   Card.find()
+    .populate(['owner', 'likes'])
     .then((users) => {
       res.status(OK).send({ data: users });
     })
@@ -56,6 +57,7 @@ const deleteCard = (req, res) => {
 const addLikeikeCard = (req, res) => {
   const userId = req.user._id;
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: userId } }, { new: true })
+    .populate(['owner', 'likes'])
     .then((like) => {
       if (like) {
         res.send({ data: like });
@@ -75,6 +77,7 @@ const addLikeikeCard = (req, res) => {
 const deleteLikeikeCard = (req, res) => {
   const userId = req.user._id;
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: userId } })
+    .populate(['owner', 'likes'])
     .then((like) => {
       if (like) {
         res.send({ data: like });
