@@ -30,7 +30,6 @@ const createCard = (req, res) => {
 }
 
 const deleteCard = (req, res) => {
-  console.log(req)
   const { cardId } = req.params;
   Card.findById(cardId).then((card) => {
     if (card.owner == req.user._id) {
@@ -45,9 +44,35 @@ const deleteCard = (req, res) => {
   })
 }
 
+const addLikeikeCard = (req, res) => {
+  const userId = req.user._id;
+  Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: userId } })
+    .then((like) => {
+      res.send({ data: like })
+    })
+    .catch(() => {
+      res.send({ message: 'Smth went wrong' })
+    })
+};
+
+const deleteLikeikeCard = (req, res) => {
+  const userId = req.user._id;
+  Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: userId } })
+    .then((like) => {
+      res.send({ data: like })
+    })
+    .catch(() => {
+      res.send({ message: 'Smth went wrong' })
+    })
+};
+
+
+
 
 module.exports = {
   getCards,
   createCard,
   deleteCard,
+  addLikeikeCard,
+  deleteLikeikeCard
 }
