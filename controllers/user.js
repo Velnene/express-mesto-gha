@@ -11,7 +11,7 @@ const getUserId = (req, res) => {
       }
     })
     .catch((e) => {
-      if (e.name === 'ValidationError') {
+      if (e.name === 'CastError') {
         res.status(400).send({ message: 'Поля неверно заполнены' });
       } else {
         res.status(500).send({ message: 'error' });
@@ -65,7 +65,7 @@ const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .then((user) => {
-      res.status(201).send(user);
+      res.status(200).send(user);
     })
     .catch((e) => {
       if (e.name === 'ValidationError') {
