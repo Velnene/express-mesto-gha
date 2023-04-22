@@ -49,9 +49,9 @@ const createUser = (req, res) => {
 const updateUser = (req, res) => {
   const userId = req.user._id
   const { name, about } = req.body;
-  User.findByIdAndUpdate( userId, {name: name, about: about} )
+  User.findByIdAndUpdate(userId, { name: name, about: about })
     .then((user) => {
-      res.status(201).send( user )
+      res.status(201).send(user)
     })
     .catch((e) => {
       if (e.status === 400) {

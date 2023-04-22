@@ -37,8 +37,13 @@ const deleteCard = (req, res) => {
         .then(() => {
           res.status(200).send({ message: 'Карточка удалена' })
         })
-        .catch(() => {
-          res.send({ message: 'Smth went wrong' })
+        .catch((e) => {
+          if (e.status === 404) {
+            res.status(404).send({ message: 'Карточка не найдена' })
+          }
+          else {
+            res.send({ message: 'Smth went wrong' })
+          }
         })
     }
   })
@@ -51,7 +56,12 @@ const addLikeikeCard = (req, res) => {
       res.send({ data: like })
     })
     .catch(() => {
-      res.send({ message: 'Smth went wrong' })
+      if (e.status === 404) {
+        res.status(404).send({ message: 'Карточка не найдена' })
+      }
+      else {
+        res.send({ message: 'Smth went wrong' })
+      }
     })
 };
 
@@ -62,7 +72,12 @@ const deleteLikeikeCard = (req, res) => {
       res.send({ data: like })
     })
     .catch(() => {
-      res.send({ message: 'Smth went wrong' })
+      if (e.status === 404) {
+        res.status(404).send({ message: 'Карточка не найдена' })
+      }
+      else {
+        res.send({ message: 'Smth went wrong' })
+      }
     })
 };
 
