@@ -10,8 +10,8 @@ const getUserId = (req, res) => {
       res.send({ data: user });
     })
     .catch((e) => {
-      if (e.message === 'Not found') {
-        res.status(404).send({ message: 'user not found' });
+      if (e.name === 'CastError') {
+        res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
         res.status(500).send({ message: 'error' });
       }
@@ -35,7 +35,7 @@ const createUser = (req, res) => {
       res.status(201).send({ data: user });
     })
     .catch((e) => {
-      if (e.status === 400) {
+      if (e.name === 'ValidationError') {
         res.status(400).send({ message: 'Поля неверно заполнены' });
       } else {
         res.status(500).send({ message: 'Smth went wrong' });
@@ -51,7 +51,7 @@ const updateUser = (req, res) => {
       res.status(201).send(user);
     })
     .catch((e) => {
-      if (e.status === 400) {
+      if (e.name === 'ValidationError') {
         res.status(400).send({ message: 'Поля неверно заполнены' });
       } else {
         res.status(500).send({ message: 'Smth went wrong' });
@@ -67,7 +67,7 @@ const updateUserAvatar = (req, res) => {
       res.status(201).send(user);
     })
     .catch((e) => {
-      if (e.status === 400) {
+      if (e.name === 'ValidationError') {
         res.status(400).send({ message: 'Поля неверно заполнены' });
       } else {
         res.status(500).send({ message: 'Smth went wrong' });

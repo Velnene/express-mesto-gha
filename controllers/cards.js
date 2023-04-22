@@ -18,7 +18,7 @@ const createCard = (req, res) => {
       res.send({ data: card });
     })
     .catch((e) => {
-      if (e.status === 400) {
+      if (e.name === 'ValidationError') {
         res.status(400).send({ message: 'Поля неверно заполнены' });
       } else {
         res.status(500).send({ message: 'Smth went wrong' });
@@ -38,7 +38,7 @@ const deleteCard = (req, res) => {
           if (e.status === 404) {
             res.status(404).send({ message: 'Карточка не найдена' });
           } else {
-            res.send({ message: 'Smth went wrong' });
+            res.status(500).send({ message: 'Smth went wrong' });
           }
         });
     }
