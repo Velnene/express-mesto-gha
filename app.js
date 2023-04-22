@@ -16,7 +16,7 @@ const { userRouter, cardRouter } = require('./routes');
 app.use(express.json());
 app.use(userRouter);
 app.use(cardRouter);
-app.get('*', (req, res) => {
+app.patch('*', (req, res) => {
   res.status(404).send({ message: 'Неверный путь' });
 });
 
