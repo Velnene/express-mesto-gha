@@ -31,8 +31,6 @@ const getUsers = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-
-  console.log(req.body)
   User.create({ name, about, avatar })
     .then((user) => {
       res.status(201).send({ data: user })
@@ -47,8 +45,46 @@ const createUser = (req, res) => {
     })
 }
 
+
+const updateUser = (req, res) => {
+  const userId = req.user._id
+  const { name, about } = req.body;
+  User.findByIdAndUpdate( userId, {name: name, about: about} )
+    .then((user) => {
+      res.status(201).send( user )
+    })
+    .catch((e) => {
+      if (e.status === 400) {
+        res.status(400).send({ message: 'Поля неверно заполнены' })
+      }
+      else {
+        res.status(500).send({ message: 'Smth went wrong' })
+      }
+    })
+}
+
+const updateUserAvatar = (req, res) => {
+  const userId = req.user._id
+  const { avatar } = req.body;
+  User.findByIdAndUpdate(userId, { avatar: avatar })
+    .then((user) => {
+      res.status(201).send(user)
+    })
+    .catch((e) => {
+      if (e.status === 400) {
+        res.status(400).send({ message: 'Поля неверно заполнены' })
+      }
+      else {
+        res.status(500).send({ message: 'Smth went wrong' })
+      }
+    })
+}
+
+
 module.exports = {
   createUser,
   getUsers,
-  getUserId
+  getUserId,
+  updateUser,
+  updateUserAvatar
 }
