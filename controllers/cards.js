@@ -6,7 +6,7 @@ const {
   NotFound,
   OK,
   CREATED,
-} = require('../errors/responsStatus');
+} = require('../respons/responsStatus');
 
 const getCards = (req, res) => {
   Card.find()

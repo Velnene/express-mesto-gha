@@ -6,7 +6,7 @@ const {
   NotFound,
   OK,
   CREATED,
-} = require('../errors/responsStatus');
+} = require('../respons/responsStatus');
 
 const getUserId = (req, res) => {
   const { userId } = req.params;
@@ -44,6 +44,7 @@ const createUser = (req, res) => {
       res.status(CREATED).send({ data: user });
     })
     .catch((e) => {
+      console.log(e.name);
       if (e.name === 'ValidationError') {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
       } else {
