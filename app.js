@@ -23,6 +23,4 @@ app.patch('*', (req, res) => {
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {});
 
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
-});
+app.listen(PORT, () => {});
