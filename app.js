@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { handleNotFoundUrl } = require('./errors/handleNotFoundUrl');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use(userRouter);
 app.use(cardRouter);
 app.patch('*', (req, res) => {
-  res.status(404).send({ message: 'Неверный путь' });
+  handleNotFoundUrl(req, res);
 });
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {});
