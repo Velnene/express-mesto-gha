@@ -96,6 +96,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   User.findOne({ email })
+    .select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
@@ -112,7 +113,7 @@ const login = (req, res) => {
 
 const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
-    .then((user) => res.status(OK).send({ data: user}))
+    .then((user) => res.status(OK).send({ data: user }))
     .catch((err) => {
       res
         .status(401)
