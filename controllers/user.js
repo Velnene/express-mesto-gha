@@ -43,13 +43,13 @@ const createUser = (req, res) => {
     name, about, avatar, email,
   } = req.body;
   bcrypt.hash(req.body.password, 10)
-    .then((hash) => {
-      User.create({
-        name, about, avatar, email, password: hash,
-      });
-    })
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
     .then((user) => {
-      res.status(CREATED).send({ data: user });
+      const userNotPassword = user;
+      delete userNotPassword.password;
+      res.status(CREATED).send({ data: userNotPassword });
     })
     .catch((e) => {
       if (e.name === 'ValidationError') {
