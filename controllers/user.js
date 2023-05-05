@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-
+const { checkToken, generateToken } = require('../utils/token')
 const {
   BadRequest,
   InternalServer,
@@ -92,7 +92,26 @@ const updateUserAvatar = (req, res) => {
     });
 };
 
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+      const token = generateToken({ _id: "d285e3dceed844f902650f40" });
+      res.send({ token });
+    })
+    .catch((err) => {
+      res
+        .status(401)
+        .send({ message: err.message });
+    });
+}
+
 module.exports = {
+  login,
   createUser,
   getUsers,
   getUserId,
