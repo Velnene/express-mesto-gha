@@ -20,5 +20,6 @@ function checkToken(token) {
 
 module.exports = {
   generateToken,
-  checkToken
+  checkToken,
+  SECRET_KEY,
 }
