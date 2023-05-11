@@ -38,7 +38,8 @@ const getUsers = (req, res) => {
     });
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
+  console.log(req.body)
   const {
     name, about, avatar, email,
   } = req.body;
