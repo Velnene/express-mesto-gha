@@ -55,7 +55,11 @@ const createUser = (req, res, next) => {
     .catch((e) => {
       if (e.name === 'ValidationError') {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
-      } else {
+      }
+      else if (e.code === 11000) {
+        next(new Error('Email уже зарегистрирован'));
+      }
+      else {
         res.status(InternalServer).send({ message: 'Smth went wrong' });
       }
     });
