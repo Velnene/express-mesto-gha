@@ -24,7 +24,20 @@ const cardSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+}, { versionKey: false });
 
-});
+  cardSchema.statics.deleteCard = function (cardId, userId) {
+    return this.findById(cardId)
+      .then((card) => {
+        if (!card) {
+          throw new NotFoundError('Карточка с указанным _id не найдена');
+        } else if (card.owner.toString() !== userId) {
+          throw new ForbiddenError('Нет доступа на удаление чужой карточки');
+        } else {
+          return card._id;
+        }
+      })
+      .then((id) => this.findByIdAndRemove(id));
+  },
 
-module.exports = mongoose.model('card', cardSchema);
+  module.exports = mongoose.model('card', cardSchema);

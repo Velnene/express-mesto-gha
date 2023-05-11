@@ -37,22 +37,10 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
-  Card.findByIdAndRemove(cardId)
+  Card.deleteCard(cardId, req.user._id)
     .populate(['owner', 'likes'])
-    .then((card) => {
-      if (card) {
-        res.send({ message: 'Карточка удалена' });
-      } else {
-        res.status(NotFound).send({ message: 'Карточка не найдена' });
-      }
-    })
-    .catch((e) => {
-      if (e.name === 'CastError') {
-        res.status(BadRequest).send({ message: 'Ошибка ввода' });
-      } else {
-        res.status(InternalServer).send({ message: 'Smth went wrong' });
-      }
-    });
+    .then((card) => { res.status(OK).send({data: card}); })
+    .catch(next);
 };
 
 const addLikeikeCard = (req, res) => {

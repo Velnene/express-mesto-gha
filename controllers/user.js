@@ -57,7 +57,7 @@ const createUser = (req, res, next) => {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
       }
       else if (e.code === 11000) {
-        next(new Error('Email уже зарегистрирован'));
+        res.status(409).send({ message: 'Email уже зарегистрирован' });
       }
       else {
         res.status(InternalServer).send({ message: 'Smth went wrong' });
@@ -70,7 +70,7 @@ const updateUser = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
     .then((user) => {
-      res.status(OK).send(user);
+      res.status(OK).send({data: user});
     })
     .catch((e) => {
       if (e.name === 'ValidationError') {
@@ -86,7 +86,7 @@ const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .then((user) => {
-      res.status(OK).send(user);
+      res.status(OK).send({data: user});
     })
     .catch((e) => {
       if (e.name === 'ValidationError') {
