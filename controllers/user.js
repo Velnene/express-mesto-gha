@@ -1,6 +1,7 @@
+/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const { checkToken, generateToken } = require('../utils/token')
+const { generateToken } = require('../utils/token');
 const {
   BadRequest,
   InternalServer,
@@ -38,7 +39,7 @@ const getUsers = (req, res) => {
     });
 };
 
-const createUser = (req, res, next) => {
+const createUser = (req, res) => {
   const {
     name, about, avatar, email,
   } = req.body;
@@ -54,11 +55,9 @@ const createUser = (req, res, next) => {
     .catch((e) => {
       if (e.name === 'ValidationError') {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
-      }
-      else if (e.code === 11000) {
+      } else if (e.code === 11000) {
         res.status(409).send({ message: 'Email уже зарегистрирован' });
-      }
-      else {
+      } else {
         res.status(InternalServer).send({ message: 'Smth went wrong' });
       }
     });
@@ -69,7 +68,7 @@ const updateUser = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
     .then((user) => {
-      res.status(OK).send({data: user});
+      res.status(OK).send({ data: user });
     })
     .catch((e) => {
       if (e.name === 'ValidationError') {
@@ -85,7 +84,7 @@ const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .then((user) => {
-      res.status(OK).send({data: user});
+      res.status(OK).send({ data: user });
     })
     .catch((e) => {
       if (e.name === 'ValidationError') {
@@ -97,7 +96,7 @@ const updateUserAvatar = (req, res) => {
 };
 
 const login = (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
   User.findOne({ email })
     .select('+password')
@@ -113,7 +112,7 @@ const login = (req, res) => {
         .status(401)
         .send({ message: err.message });
     });
-}
+};
 
 const getCurrentUser = (req, res) => {
   const userId = req.user._id;

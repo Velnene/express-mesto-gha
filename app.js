@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 const { handleNotFoundUrl } = require('./errors/handleNotFoundUrl');
 const { login, createUser } = require('./controllers/user');
 const { loginValidate, createValidate } = require('./errors/userError');
-const { errors } = require('celebrate');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -19,7 +19,6 @@ app.patch('*', (req, res) => {
   handleNotFoundUrl(req, res);
 });
 app.use(errors());
-
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {});
 

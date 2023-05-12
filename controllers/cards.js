@@ -42,29 +42,20 @@ const deleteCard = (req, res, next) => {
     .then((card) => {
       if (!card) {
         res.status(404).send({ message: 'Невалидный id карточки' });
-      }
-      else {
-        if (card.owner.equals(req.user._id)) {
-          Card.findByIdAndRemove(cardId)
-            .then(() => {
-              res.status(200).send({ message: 'Карточка удалена' });
-            })
-            .catch((err) => {
-              next(err);
-            });
-        } else {
-          res.status(403).send({ message: 'Можно удалять только свои карточки' });
-        }
+      } else if (card.owner.equals(req.user._id)) {
+        Card.findByIdAndRemove(cardId)
+          .then(() => {
+            res.status(200).send({ message: 'Карточка удалена' });
+          })
+          .catch((err) => {
+            next(err);
+          });
+      } else {
+        res.status(403).send({ message: 'Можно удалять только свои карточки' });
       }
     })
     .catch(next);
 };
-
-
-
-
-
-
 
 const addLikeikeCard = (req, res) => {
   const userId = req.user._id;
