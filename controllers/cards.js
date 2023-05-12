@@ -38,16 +38,17 @@ const createCard = (req, res) => {
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card.deleteCard(cardId, req.user._id)
-    .then((card) => { res.status(OK).send({data: card}); })
-     .catch((e) => {
-    //   if (e.name === 'ValidationError') {
-    //     res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
-    //   } else if (e.name === 'Bad Request') {
-    //     res.status(404).send({ message: 'Не существующая карточка' });
-    //   } else {
-    //     res.status(403).send({ message: 'Карточка не ваша' });
-    //   }
-     next(e) });
+    .then((card) => { res.status(OK).send({ data: card }); })
+  .catch(next)
+    //  .catch((e) => {
+    // //   if (e.name === 'ValidationError') {
+    // //     res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
+    // //   } else if (e.name === 'Bad Request') {
+    // //     res.status(404).send({ message: 'Не существующая карточка' });
+    // //   } else {
+    // //     res.status(403).send({ message: 'Карточка не ваша' });
+    // //   }
+    //  next() });
 };
 
 const addLikeikeCard = (req, res) => {
