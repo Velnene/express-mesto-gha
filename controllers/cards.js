@@ -53,7 +53,7 @@ const deleteCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.kind === 'ObjectId') {
+      if (!cardId) {
         throw new Error('Невалидный id карточки');
       } else {
         next(err);
