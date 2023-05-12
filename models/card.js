@@ -26,7 +26,7 @@ const cardSchema = new mongoose.Schema({
   },
 }, { versionKey: false });
 
-  cardSchema.statics.deleteCard = function (cardId, userId) {
+  cardSchema.statics.deleteCard = function foo(cardId, userId) {
     return this.findById(cardId)
       .then((card) => {
         if (!card) {
