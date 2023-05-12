@@ -38,9 +38,14 @@ const createCard = (req, res) => {
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
   Card.deleteCard(cardId, req.user._id)
-    .populate(['owner', 'likes'])
     .then((card) => { res.status(OK).send({data: card}); })
-    .catch(next);
+    .catch((e) => {
+      if (e.name === 'ValidationError') {
+        res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
+      } else {
+        res.status(InternalServer).send({ message: 'Smth went wrong' });
+      }
+    });
 };
 
 const addLikeikeCard = (req, res) => {
