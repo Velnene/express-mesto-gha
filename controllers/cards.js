@@ -40,25 +40,23 @@ const deleteCard = (req, res, next) => {
 
   Card.findById(cardId)
     .then((card) => {
-      if (card.owner.equals(req.user._id)) {
-        Card.findByIdAndRemove(cardId)
-          .then(() => {
-            res.status(200).send({ message: 'Карточка удалена' });
-          })
-          .catch((err) => {
-            next(err);
-          });
-      } else {
-        throw new Error('Можно удалять только свои карточки');
+      if (!card) {
+        return Promise.reject(new Error('Невалидный id карточки'));
       }
-    })
-    .catch((err) => {
-      if (!cardId) {
-        throw new Error('Невалидный id карточки');
-      } else {
-        next(err);
+      else {
+        if (card.owner.equals(req.user._id)) {
+          Card.findByIdAndRemove(cardId)
+            .then(() => {
+              res.status(200).send({ message: 'Карточка удалена' });
+            })
+            .catch((err) => {
+              next(err);
+            });
+        } else {
+          return Promise.reject(new Error('Можно удалять только свои карточки'));
+        }
       }
-    })
+      })
     .catch(next);
 };
 
