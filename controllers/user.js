@@ -106,7 +106,7 @@ const login = (req, res) => {
       if (!user) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
-      const token = generateToken({ _id: "d285e3dceed844f902650f40" });
+      const token = generateToken({ _id: user.id });
       res.send({ token });
     })
     .catch((err) => {
@@ -117,7 +117,8 @@ const login = (req, res) => {
 }
 
 const getCurrentUser = (req, res) => {
-  User.findById(req.user._id)
+  const userId = req.user._id;
+  User.findById(userId)
     .then((user) => res.status(OK).send({ data: user }))
     .catch((err) => {
       res
