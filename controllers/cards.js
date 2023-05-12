@@ -38,7 +38,7 @@ const createCard = (req, res) => {
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card.deleteCard(cardId, req.user._id)
-    .then((card) => { res.status(OK).send({ data: card }); })
+    .then((card) => { res.status(OK).send({ data: card }) })
     .catch(next);
 };
 

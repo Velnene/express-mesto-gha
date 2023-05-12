@@ -11,7 +11,7 @@ const {
   updateUserAvatar,
 } = require('../controllers/user');
 
-// userRouter.use(auth);
+userRouter.use(auth);
 userRouter.get('/users/me', getCurrentUser);
 userRouter.get('/users/:userId', idValidate, getUserId);
 userRouter.get('/users', getUsers);
