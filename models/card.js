@@ -30,9 +30,9 @@ const cardSchema = new mongoose.Schema({
     return this.findById(cardId)
       .then((card) => {
         if (!card) {
-          res.status(404).send({ message: 'Карточка с указанным _id не найдена' });
+          return Promise.reject(new Error('Карточка с указанным _id не найдена'));
         } else if (card.owner.toString() !== userId) {
-          res.status(403).send({ message: 'Нет доступа на удаление чужой карточки' });
+          return Promise.reject(new Error('Нет доступа на удаление чужой карточки'));
         } else {
           return card._id;
         }
