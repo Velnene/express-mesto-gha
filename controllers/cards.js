@@ -37,10 +37,35 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-  Card.deleteCard(cardId, req.user._id)
-    .then((card) => { res.status(OK).send({ data: card }) })
+  Card.findById(cardId)
+    .then((card) => {
+      if (card.owner.toString() === userId) {
+        Card.findByIdAndRemove(cardId)
+          .then(() => {
+            res.status(OK).send({ data: card });
+          })
+          .catch((err) => {
+            next(err);
+          });
+      } else {
+        return Promise.reject(new Error('Нет доступа на удаление чужой карточки'));
+      }
+    })
+    .catch((err) => {
+      if (err.kind === 'ObjectId') {
+        return Promise.reject(new Error('Карточка с указанным _id не найдена'));
+      } else {
+        next(err);
+      }
+    })
     .catch(next);
 };
+
+
+
+
+
+
 
 const addLikeikeCard = (req, res) => {
   const userId = req.user._id;
