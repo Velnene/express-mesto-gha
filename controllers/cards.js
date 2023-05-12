@@ -39,7 +39,7 @@ const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card.findById(cardId)
     .then((card) => {
-      if (card.owner.toString() === userId) {
+      if (card.owner.toString() === req.userId._id) {
         Card.findByIdAndRemove(cardId)
           .then(() => {
             res.status(OK).send({ data: card });
