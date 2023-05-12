@@ -26,18 +26,4 @@ const cardSchema = new mongoose.Schema({
   },
 }, { versionKey: false });
 
-  cardSchema.statics.deleteCard = function foo(cardId, userId) {
-    return this.findById(cardId)
-      .then((card) => {
-        if (!card) {
-          return Promise.reject(new Error('Карточка с указанным _id не найдена'));
-        } else if (card.owner.toString() !== userId) {
-          return Promise.reject(new Error('Нет доступа на удаление чужой карточки'));
-        } else {
-          return card._id;
-        }
-      })
-      .then((id) => this.findByIdAndRemove(id));
-  },
-
   module.exports = mongoose.model('card', cardSchema);

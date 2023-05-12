@@ -41,7 +41,7 @@ const deleteCard = (req, res, next) => {
   Card.findById(cardId)
     .then((card) => {
       if (!card) {
-        return Promise.reject(new Error('Невалидный id карточки'));
+        res.status(404).send({ message: 'Невалидный id карточки' });
       }
       else {
         if (card.owner.equals(req.user._id)) {
@@ -53,10 +53,10 @@ const deleteCard = (req, res, next) => {
               next(err);
             });
         } else {
-          return Promise.reject(new Error('Можно удалять только свои карточки'));
+          res.status(403).send({ message: 'Можно удалять только свои карточки' });
         }
       }
-      })
+    })
     .catch(next);
 };
 
