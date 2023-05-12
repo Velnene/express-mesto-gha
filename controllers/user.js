@@ -39,7 +39,6 @@ const getUsers = (req, res) => {
 };
 
 const createUser = (req, res, next) => {
-  console.log(req.body)
   const {
     name, about, avatar, email,
   } = req.body;
@@ -100,8 +99,7 @@ const updateUserAvatar = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email })
-    .select('+password')
+  User.findUserByCredentials({ email })
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
