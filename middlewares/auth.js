@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
 const { SECRET_KEY = 'some-secret-key' } = process.env;
+const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
   }
 
   req.user = payload;
-  next();
+  return next();
 };
 
 module.exports = auth;

@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { generateToken } = require('../utils/token');
@@ -105,7 +104,7 @@ const login = (req, res) => {
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
       const token = generateToken({ _id: user.id });
-      res.send({ token });
+      return res.send({ token });
     })
     .catch((err) => {
       res
