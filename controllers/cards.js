@@ -37,23 +37,24 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
+
   Card.findById(cardId)
     .then((card) => {
-      if (card.owner.toString() === req.userId._id) {
+      if (card.owner.equals(req.user._id)) {
         Card.findByIdAndRemove(cardId)
           .then(() => {
-            res.status(OK).send({ data: card });
+            res.status(200).send({ message: 'Карточка удалена' });
           })
           .catch((err) => {
             next(err);
           });
       } else {
-        return Promise.reject(new Error('Нет доступа на удаление чужой карточки'));
+        throw new Error('Можно удалять только свои карточки');
       }
     })
     .catch((err) => {
       if (err.kind === 'ObjectId') {
-        return Promise.reject(new Error('Карточка с указанным _id не найдена'));
+        throw new Error('Невалидный id карточки');
       } else {
         next(err);
       }
