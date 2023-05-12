@@ -42,8 +42,10 @@ const deleteCard = (req, res) => {
     .catch((e) => {
       if (e.name === 'ValidationError') {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
-      } else {
-        res.status(InternalServer).send({ message: 'Smth went wrong' });
+      } else if (!cardId) {
+        res.status(404).send({ message: 'Не существующая карточка' });
+      }  else {
+        res.status(403).send({ message: 'Карточка не ваша' });
       }
     });
 };
