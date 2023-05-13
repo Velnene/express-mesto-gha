@@ -6,7 +6,10 @@ const { login, createUser } = require('./controllers/user');
 const { loginValidate, createValidate } = require('./errors/userError');
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const {
+  PORT = 3000,
+  MONGO_URL = 'mongodb://0.0.0.0:27017/mestodb',
+} = process.env;
 
 const { userRouter, cardRouter } = require('./routes');
 
@@ -20,6 +23,6 @@ app.patch('*', (req, res) => {
 });
 app.use(errors());
 
-mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {});
+mongoose.connect(MONGO_URL, {});
 
 app.listen(PORT, () => { });
