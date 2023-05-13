@@ -23,7 +23,7 @@ const getUserId = (req, res) => {
       if (e.name === 'CastError') {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
       } else {
-        res.status(InternalServer).send({ message: 'error' });
+        res.status(InternalServer).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -34,7 +34,7 @@ const getUsers = (req, res) => {
       res.send({ data: users });
     })
     .catch(() => {
-      res.status(InternalServer).send({ message: 'error' });
+      res.status(InternalServer).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -57,7 +57,7 @@ const createUser = (req, res) => {
       } else if (e.code === 11000) {
         res.status(409).send({ message: 'Email уже зарегистрирован' });
       } else {
-        res.status(InternalServer).send({ message: 'Smth went wrong' });
+        res.status(InternalServer).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -73,7 +73,7 @@ const updateUser = (req, res) => {
       if (e.name === 'ValidationError') {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
       } else {
-        res.status(InternalServer).send({ message: 'Smth went wrong' });
+        res.status(InternalServer).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -89,7 +89,7 @@ const updateUserAvatar = (req, res) => {
       if (e.name === 'ValidationError') {
         res.status(BadRequest).send({ message: 'Поля неверно заполнены' });
       } else {
-        res.status(InternalServer).send({ message: 'Smth went wrong' });
+        res.status(InternalServer).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };

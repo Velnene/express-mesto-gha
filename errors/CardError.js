@@ -1,6 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-
-const urlValid = /^https?:\/\/(www.)?[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*#?$/;
+const urlValid = require('../utils/urlValid');
 
 const cardValidate = celebrate({
   body: Joi.object().keys({
